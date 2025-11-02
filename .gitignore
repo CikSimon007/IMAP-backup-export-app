@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Email data - contains sensitive information
+data/*
+!data/.gitkeep
+
+# Backend account storage - contains passwords
+backend/accounts.json
+
+# Node modules
+node_modules/
+
+# Build outputs
+frontend/dist/
+frontend/build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+logs/
