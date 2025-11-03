@@ -55,5 +55,16 @@ export const syncApi = {
   getExportStatus: (exportId) => apiCall(`/sync/export/${encodeURIComponent(exportId)}/status`),
 };
 
+// Mailbox API
+export const mailboxesApi = {
+  getMailboxes: (accountEmail) => apiCall(`/mailboxes/${encodeURIComponent(accountEmail)}/mailboxes`),
+
+  getSummary: (accountEmail, mailboxName) =>
+    apiCall(`/mailboxes/${encodeURIComponent(accountEmail)}/mailboxes/${encodeURIComponent(mailboxName)}/summary`),
+
+  getMessage: (accountEmail, mailboxName, uid) =>
+    apiCall(`/mailboxes/${encodeURIComponent(accountEmail)}/mailboxes/${encodeURIComponent(mailboxName)}/messages/${uid}`),
+};
+
 // Health check
 export const healthCheck = () => apiCall('/health');

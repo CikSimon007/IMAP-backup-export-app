@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import AccountList from './components/AccountList';
 import AddAccountForm from './components/AddAccountForm';
 import ExportModal from './components/ExportModal';
+import MailboxViewer from './components/MailboxViewer';
 import { accountsApi } from './services/api';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
   const [error, setError] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
+  const [activeTab, setActiveTab] = useState('accounts'); // 'accounts' or 'viewer'
 
   // Load accounts on mount
   useEffect(() => {
@@ -107,69 +109,107 @@ function App() {
             </div>
           </div>
         </div>
+
+        {/* Navigation Tabs */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-t border-gray-200">
+            <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+              <button
+                onClick={() => setActiveTab('accounts')}
+                className={`
+                  py-4 px-1 border-b-2 font-medium text-sm
+                  ${
+                    activeTab === 'accounts'
+                      ? 'border-indigo-500 text-indigo-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }
+                `}
+              >
+                Accounts
+              </button>
+              <button
+                onClick={() => setActiveTab('viewer')}
+                className={`
+                  py-4 px-1 border-b-2 font-medium text-sm
+                  ${
+                    activeTab === 'viewer'
+                      ? 'border-indigo-500 text-indigo-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }
+                `}
+              >
+                Mailbox Viewer
+              </button>
+            </nav>
+          </div>
+        </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {error && (
-          <div className="mb-4 bg-red-50 border border-red-200 rounded-md p-4">
-            <p className="text-sm text-red-800">{error}</p>
-          </div>
-        )}
-
-        {loading ? (
-          <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-          </div>
-        ) : accounts.length === 0 ? (
-          <div className="text-center py-12">
-            <svg
-              className="mx-auto h-12 w-12 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-              />
-            </svg>
-            <h3 className="mt-2 text-sm font-medium text-gray-900">No accounts</h3>
-            <p className="mt-1 text-sm text-gray-500">
-              Get started by adding your first email account.
-            </p>
-            <div className="mt-6">
-              <button
-                onClick={() => setShowAddForm(true)}
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-              >
-                <svg
-                  className="mr-2 -ml-1 h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                Add Account
-              </button>
+      {activeTab === 'accounts' ? (
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {error && (
+            <div className="mb-4 bg-red-50 border border-red-200 rounded-md p-4">
+              <p className="text-sm text-red-800">{error}</p>
             </div>
-          </div>
-        ) : (
-          <AccountList
-            accounts={accounts}
-            onDelete={handleDeleteAccount}
-            onRefresh={loadAccounts}
-          />
-        )}
-      </main>
+          )}
+
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+            </div>
+          ) : accounts.length === 0 ? (
+            <div className="text-center py-12">
+              <svg
+                className="mx-auto h-12 w-12 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+              <h3 className="mt-2 text-sm font-medium text-gray-900">No accounts</h3>
+              <p className="mt-1 text-sm text-gray-500">
+                Get started by adding your first email account.
+              </p>
+              <div className="mt-6">
+                <button
+                  onClick={() => setShowAddForm(true)}
+                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                >
+                  <svg
+                    className="mr-2 -ml-1 h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  Add Account
+                </button>
+              </div>
+            </div>
+          ) : (
+            <AccountList
+              accounts={accounts}
+              onDelete={handleDeleteAccount}
+              onRefresh={loadAccounts}
+            />
+          )}
+        </main>
+      ) : (
+        <MailboxViewer />
+      )}
 
       {/* Add Account Modal */}
       {showAddForm && (

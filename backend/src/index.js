@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import accountsRouter from './routes/accounts.js';
 import syncRouter from './routes/sync.js';
+import mailboxesRouter from './routes/mailboxes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -13,6 +14,7 @@ app.use(express.json());
 // Routes
 app.use('/api/accounts', accountsRouter);
 app.use('/api/sync', syncRouter);
+app.use('/api/mailboxes', mailboxesRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {
